@@ -60,10 +60,3 @@ void render_shape(CHAR_INFO display_board[BOARD_SIZE], shape_t shape, COORD posi
 		}
 	}
 }
-
-bool is_in_bounds(COORD position) {
-	return (position.X >= 0)
-		&& (position.X < BOARD_WIDTH)
-		&& (position.Y >= 0)
-		&& (position.Y < BOARD_HEIGHT);
-}

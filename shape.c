@@ -1,5 +1,6 @@
 #include "shape.h"
 #include "board.h"
+#include "utils.h"
 
 #include <stdlib.h>
 

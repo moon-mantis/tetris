@@ -14,6 +14,9 @@ typedef struct {
 
 enum key_presses {
 	QUIT_KEY = 'q',
+	LEFT_KEY = 'a',
+	RIGHT_KEY = 'd',
+	DOWN_KEY = 's'
 };
 
 /**
@@ -29,3 +32,16 @@ bool game_loop(HANDLE screen_handle);
 * Returns: whether the user quit the game or not.
 */
 bool handle_input(tetris_game_t* game);
+
+/**
+* Move the current shape based on the given offset if the move wouldn't cause the shape to be out of bounds,
+* or overlapping a non-empty board tile.
+* 
+* Returns: whether the move was successfully performed or not.
+*/
+bool try_moving_shape(tetris_game_t* game, COORD offset);
+
+/**
+* Returns: true if the current shape is in bounds and not overlapping a non-empty board tile, false otherwise.
+*/
+bool is_shape_in_legal_position(tetris_game_t game);

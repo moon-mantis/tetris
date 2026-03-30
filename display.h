@@ -41,8 +41,3 @@ void render_board(CHAR_INFO character_board[BOARD_SIZE], const tile_state_t game
 * the character board, converts it into a pixel and puts it in the character board.
 */
 void render_shape(CHAR_INFO display_board[BOARD_SIZE], shape_t shape, COORD shape_position);
-
-/**
-* Returns whether the position is inside of the board or not.
-*/
-bool is_in_bounds(COORD position);
