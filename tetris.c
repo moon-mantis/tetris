@@ -3,11 +3,14 @@
 #include "error.h"
 
 #include <conio.h>
+#include <time.h>
 
 bool game_loop(HANDLE screen_handle) {
+	srand((unsigned)time(NULL));
+
 	tetris_game_t game = {
 		.board = { 0 },
-		.current_shape = Z_SHAPE,
+		.current_shape = get_random_shape(),
 		.current_shape_position = SHAPE_STARTING_POSITION
 	};
 

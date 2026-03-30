@@ -15,6 +15,5 @@ shape_t get_random_shape() {
 	};
 
 	size_t random_shape_index = (size_t)(rand() % (sizeof(shape_options) / sizeof(shape_t)));
-
 	return shape_options[random_shape_index];
 }

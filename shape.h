@@ -55,3 +55,11 @@ static const shape_t L_PRIME_SHAPE = { {
 	1, 1, 1,
 	0, 0, 0
 }, 3u };
+
+/**
+* Generates a random shape.
+* Uses the `rand()` function for randomness, so `srand()` should be called before this function.
+* 
+* Returns: a random shape.
+*/
+shape_t get_random_shape();
