@@ -1,12 +1,15 @@
 #pragma once
 
 #include "board.h"
+#include "shape.h"
 
 #include <Windows.h>
 #include <stdbool.h>
 
 typedef struct {
 	tile_state_t board[BOARD_SIZE];
+	shape_t current_shape;
+	COORD current_shape_position;
 } tetris_game_t;
 
 enum key_presses {

@@ -6,7 +6,9 @@
 
 bool game_loop(HANDLE screen_handle) {
 	tetris_game_t game = {
-		.board = { 0 }
+		.board = { 0 },
+		.current_shape = Z_SHAPE,
+		.current_shape_position = SHAPE_STARTING_POSITION
 	};
 
 	while (true) {
@@ -14,7 +16,7 @@ bool game_loop(HANDLE screen_handle) {
 			break;
 		}
 
-		if (!render_and_print_game(screen_handle, game)) {
+		if (!render_and_display_game(screen_handle, game)) {
 			print_last_error("printing game");
 			return false;
 		}
