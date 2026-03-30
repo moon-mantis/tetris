@@ -10,6 +10,10 @@ bool game_loop(HANDLE screen_handle) {
 	};
 
 	while (true) {
+		if (handle_input(&game)) {
+			break;
+		}
+
 		if (!render_and_print_game(screen_handle, game)) {
 			print_last_error("printing game");
 			return false;
@@ -17,4 +21,19 @@ bool game_loop(HANDLE screen_handle) {
 	}
 
 	return true;
+}
+
+bool handle_input(tetris_game_t* game) {
+	if (!_kbhit()) {
+		return false;
+	}
+
+	switch (_getch()) {
+	case QUIT_KEY:
+		return true;
+	default:
+		break;
+	}
+
+	return false;
 }

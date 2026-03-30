@@ -9,9 +9,20 @@ typedef struct {
 	tile_state_t board[BOARD_SIZE];
 } tetris_game_t;
 
+enum key_presses {
+	QUIT_KEY = 'q',
+};
+
 /**
 * Run the game in a loop until it ends or the user quits.
 * 
 * Returns: whether the game ran successfuly or not.
 */
 bool game_loop(HANDLE screen_handle);
+
+/**
+* Handle keyboard input from the user if it exists.
+* 
+* Returns: whether the user quit the game or not.
+*/
+bool handle_input(tetris_game_t* game);
