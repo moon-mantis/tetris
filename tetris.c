@@ -16,7 +16,19 @@ bool game_loop(HANDLE screen_handle) {
 		.current_shape_position = SHAPE_STARTING_POSITION
 	};
 
+	UINT64 current_time = 0;
+	UINT64 delta_time = 0;
+	
+	current_time = get_absolute_time_in_ms();
+
 	while (true) {
+		delta_time = get_absolute_time_in_ms() - current_time;
+		current_time += delta_time;
+
+		if (handle_delta_time(&game, delta_time)) {
+			break;
+		}
+
 		if (handle_input(&game)) {
 			break;
 		}
@@ -31,10 +43,6 @@ bool game_loop(HANDLE screen_handle) {
 }
 
 bool handle_input(tetris_game_t* game) {
-	static const COORD OFFSET_LEFT = { .X = -1, .Y = 0};
-	static const COORD OFFSET_RIGHT = { .X = 1, .Y = 0};
-	static const COORD OFFSET_DOWN = { .X = 0, .Y = 1 };
-	
 	if (!_kbhit()) {
 		return false;
 	}
@@ -49,7 +57,9 @@ bool handle_input(tetris_game_t* game) {
 		try_moving_shape(game, OFFSET_RIGHT);
 		break;
 	case DOWN_KEY:
-		try_moving_shape(game, OFFSET_DOWN);
+		if (try_moving_shape(game, OFFSET_DOWN)) {
+			game->time_since_last_drop = 0;
+		}
 		break;
 	default:
 		break;
@@ -99,4 +109,21 @@ bool is_shape_in_legal_position(tetris_game_t game) {
 	}
 
 	return true;
+}
+
+bool handle_delta_time(tetris_game_t* game, UINT64 delta_time) {
+	game->time_since_last_drop += delta_time;
+
+	bool shape_should_drop = game->time_since_last_drop >= AUTOMATIC_DROP_TIME;
+	if (!shape_should_drop) {
+		return false;
+	}
+
+	bool move_worked = try_moving_shape(game, OFFSET_DOWN);
+	if (move_worked) {
+		game->time_since_last_drop -= AUTOMATIC_DROP_TIME;
+		return false;
+	}
+
+	return false;
 }
