@@ -59,3 +59,8 @@ bool is_shape_in_legal_position(tetris_game_t game);
 * Returns: whether the player lost or not.
 */
 bool handle_delta_time(tetris_game_t* game, UINT64 delta_time);
+
+/**
+* Place the current piece on the board tiles.
+*/
+void place_piece(tetris_game_t* game);

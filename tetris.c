@@ -26,6 +26,7 @@ bool game_loop(HANDLE screen_handle) {
 		current_time += delta_time;
 
 		if (handle_delta_time(&game, delta_time)) {
+			_cprintf("You lost :(\n\n");
 			break;
 		}
 
@@ -73,7 +74,7 @@ bool try_moving_shape(tetris_game_t* game, COORD offset) {
 	new_game.current_shape_position.X += offset.X;
 	new_game.current_shape_position.Y += offset.Y;
 
-	if (!is_shape_in_legal_position(new_game)) {
+	if (!is_current_shape_in_legal_position(new_game)) {
 		return false;
 	}
 
@@ -81,7 +82,7 @@ bool try_moving_shape(tetris_game_t* game, COORD offset) {
 	return true;
 }
 
-bool is_shape_in_legal_position(tetris_game_t game) {
+bool is_current_shape_in_legal_position(tetris_game_t game) {
 	tile_state_t current_shape_tile = 0;
 	tile_state_t current_board_tile = 0;
 	COORD current_board_tile_position = { 0 };
@@ -125,5 +126,36 @@ bool handle_delta_time(tetris_game_t* game, UINT64 delta_time) {
 		return false;
 	}
 
-	return false;
+	place_piece(game);
+	game->current_shape = get_random_shape();
+	game->current_shape_position = SHAPE_STARTING_POSITION;
+
+	return !is_current_shape_in_legal_position(*game);
+}
+
+void place_piece(tetris_game_t* game) {
+	tile_state_t current_shape_tile = 0;
+	tile_state_t current_board_tile = 0;
+	COORD current_board_tile_position = { 0 };
+	size_t current_board_tile_index = 0;
+	for (size_t y = 0; y < game->current_shape.size; y++)
+	{
+		for (size_t x = 0; x < game->current_shape.size; x++)
+		{
+			current_shape_tile = game->current_shape.tiles[y * game->current_shape.size + x];
+			if (current_shape_tile == EMPTY_TILE) {
+				continue;
+			}
+
+			current_board_tile_position.X = game->current_shape_position.X + x;
+			current_board_tile_position.Y = game->current_shape_position.Y + y;
+			assert(is_in_bounds(current_board_tile_position));
+
+			current_board_tile_index = current_board_tile_position.Y * BOARD_WIDTH + current_board_tile_position.X;
+			assert(current_board_tile_index < BOARD_SIZE);
+			assert(game->board[current_board_tile_index] == EMPTY_TILE);
+
+			game->board[current_board_tile_index] = current_shape_tile;
+		}
+	}
 }
