@@ -127,6 +127,8 @@ bool handle_delta_time(tetris_game_t* game, UINT64 delta_time) {
 	}
 
 	place_piece(game);
+	clear_full_rows(game);
+
 	game->current_shape = get_random_shape();
 	game->current_shape_position = SHAPE_STARTING_POSITION;
 
@@ -158,4 +160,43 @@ void place_piece(tetris_game_t* game) {
 			game->board[current_board_tile_index] = current_shape_tile;
 		}
 	}
+}
+
+size_t clear_full_rows(tetris_game_t* game) {
+	size_t cleared_row_count = 0u;
+	
+	for (size_t row_index = 0; row_index < BOARD_HEIGHT; row_index++)
+	{
+		if (is_row_full(*game, row_index)) {
+			clear_row(game, row_index);
+			cleared_row_count++;
+		}
+	}
+
+	return cleared_row_count;
+}
+
+void clear_row(tetris_game_t* game, size_t cleared_row_index) {
+	for (size_t row_index = cleared_row_index - 1u; row_index > 0u; row_index--)
+	{
+		memcpy(game->board + (row_index + 1u) * BOARD_WIDTH,
+			game->board + row_index * BOARD_WIDTH,
+			BOARD_WIDTH * sizeof(tile_state_t)
+		);
+	}
+
+	memset(game->board, 0, BOARD_WIDTH * sizeof(tile_state_t));
+}
+
+bool is_row_full(tetris_game_t game, size_t row_index) {
+	assert(row_index < BOARD_HEIGHT);
+
+	for (size_t i = 0; i < BOARD_WIDTH; i++)
+	{
+		if (game.board[row_index * BOARD_WIDTH + i] == EMPTY_TILE) {
+			return false;
+		}
+	}
+	
+	return true;
 }

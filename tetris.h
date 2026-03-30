@@ -64,3 +64,20 @@ bool handle_delta_time(tetris_game_t* game, UINT64 delta_time);
 * Place the current piece on the board tiles.
 */
 void place_piece(tetris_game_t* game);
+
+/**
+* Clear full rows in the board, shifting the rows above them down.
+* 
+* Returns: the number of cleared rows.
+*/
+size_t clear_full_rows(tetris_game_t* game);
+
+/**
+* Clear the row with the given row index, shifting the rows above it down.
+*/
+void clear_row(tetris_game_t* game, size_t cleared_row_index);
+
+/**
+* Returns: whether the row is completely full of non-empty tiles or not.
+*/
+bool is_row_full(tetris_game_t game, size_t row_index);
