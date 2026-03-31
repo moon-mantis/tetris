@@ -62,6 +62,9 @@ bool handle_input(tetris_game_t* game) {
 			game->time_since_last_drop = 0;
 		}
 		break;
+	case ROTATE_CLOCKWISE_KEY:
+		try_rotating_current_shape_clockwise(game);
+		break;
 	default:
 		break;
 	}
@@ -198,5 +201,17 @@ bool is_row_full(tetris_game_t game, size_t row_index) {
 		}
 	}
 	
+	return true;
+}
+
+bool try_rotating_current_shape_clockwise(tetris_game_t* game) {
+	tetris_game_t new_game = *game;
+	new_game.current_shape = rotate_shape_clockwise(game->current_shape);
+
+	if (!is_current_shape_in_legal_position(new_game)) {
+		return false;
+	}
+
+	game->current_shape = new_game.current_shape;
 	return true;
 }

@@ -19,7 +19,8 @@ enum key_presses {
 	QUIT_KEY = 'q',
 	LEFT_KEY = 'a',
 	RIGHT_KEY = 'd',
-	DOWN_KEY = 's'
+	DOWN_KEY = 's',
+	ROTATE_CLOCKWISE_KEY = 'w'
 };
 
 static const COORD OFFSET_LEFT = { .X = -1, .Y = 0 };
@@ -51,7 +52,7 @@ bool try_moving_shape(tetris_game_t* game, COORD offset);
 /**
 * Returns: true if the current shape is in bounds and not overlapping a non-empty board tile, false otherwise.
 */
-bool is_shape_in_legal_position(tetris_game_t game);
+bool is_current_shape_in_legal_position(tetris_game_t game);
 
 /**
 * Handle consequences of time passing in the game.
@@ -81,3 +82,8 @@ void clear_row(tetris_game_t* game, size_t cleared_row_index);
 * Returns: whether the row is completely full of non-empty tiles or not.
 */
 bool is_row_full(tetris_game_t game, size_t row_index);
+
+/**
+* 
+*/
+bool try_rotating_current_shape_clockwise(tetris_game_t* game);

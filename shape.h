@@ -63,3 +63,8 @@ static const shape_t L_PRIME_SHAPE = { {
 * Returns: a random shape.
 */
 shape_t get_random_shape();
+
+/**
+* 
+*/
+shape_t rotate_shape_clockwise(shape_t shape);
